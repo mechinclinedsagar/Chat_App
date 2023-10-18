@@ -216,3 +216,19 @@ Step-4
 3. then using "ng serve" started the application
 
 
+
+URL's
+
+------
+
+login:
+
+https://localhost:44374/api/Chat?uname=siri&pass=siri1234
+
+register:
+
+https://localhost:44374/api/Chat/AddUser?name=Monica&uname=gupta&pass=Moni123
+
+msg:
+
+https://localhost:44374/api/Chat/SendMessage?uname=siri&pass=siri1234&rname=gupta&message=Good%20morning%20mam
