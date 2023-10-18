@@ -433,7 +433,7 @@ import { FormsModule } from '@angular/forms';
 export class AppModule { }
 
 **************************************************************************************************************************************************
-
+DESCRIPTION: 
 The provided code is the app.module.ts file in an Angular application. This file is a critical part of the Angular application's configuration and is used to set up the application's modules, components, services, and other dependencies. Let's break down and describe the key elements of this code:
 
 Imports:
@@ -532,6 +532,7 @@ export class AppComponent implements OnInit{
 
 }
 *********************************************************************************************************************************
+DESCRIPTION: 
 The provided code is the app.component.ts file in an Angular application. This file defines the behavior and logic for the root component of the application. Let's break down and describe the key elements of this code:
 
 Imports:
@@ -614,7 +615,7 @@ app.component.html
 <h4>{{status}}</h4>
 
 ****************************************************************************************************
-
+DESCRIPTION: 
 The provided code is an Angular component template defined in the app.component.html file. It specifies the HTML structure and user interface for the root component of our Angular application. Let's break down and explain the code:
 
 Conditional Rendering:
