@@ -185,3 +185,41 @@ register.html
 HERE I HAVE USED THE INDEX PAGE AS LOG IN PAGE
 
 WE NEED TO UPDATE THIS FORM ACTION HERE
+
+********************************************************************************************************************************
+
+
+Chatting application
+
+WEB API: 
+User login control (with username and password); save messages used in the chat for future scrutiny.
+Run the API to get all active URLs
+
+SQL Server:
+Login table and Messages table
+
+Angular App:
+Call all the services separately and handle the services via a Component and use them wisely
+
+
+
+
+References:
+
+https://www.c-sharpcorner.com/article/login-and-crud-operations-in-asp-net-web-api-using-angular-9-web-application/
+
+https://github.com/Ukmandal/Employee-Management-Portial
+
+https://dzone.com/articles/login-and-registration-aspnet-web-api-using-angula
+
+
+Backend: WEB API, SQL
+Frontend: Angular, handle the services via a Component , styling
+
+
+Works in parts:
+
+Web API
+SQL
+handle the services via a Component
+styling
