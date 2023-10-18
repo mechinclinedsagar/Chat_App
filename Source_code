@@ -497,6 +497,7 @@ export class AppComponent implements OnInit{
   public rname: string = "";
   public msg: string = "";
   public isRegister: boolean = false;
+  public isLoggedIn: boolean = false;
 
   constructor(private chat: ChatService) { }
 
@@ -512,6 +513,10 @@ export class AppComponent implements OnInit{
   onLogin() {
     this.chat.getPosts(this.uname, this.pass).subscribe((stat: any) => {
       this.status = stat;
+      if(this.status == "Login successful")
+      {
+        this.isLoggedIn = true;
+      }
       console.log(stat);
     });
   }
@@ -530,7 +535,15 @@ export class AppComponent implements OnInit{
     });
   }
 
+  onLogout() {
+    this.isLoggedIn = false;
+    this.status = "";
+  }
+
 }
+
+
+
 *********************************************************************************************************************************
 DESCRIPTION: 
 The provided code is the app.component.ts file in an Angular application. This file defines the behavior and logic for the root component of the application. Let's break down and describe the key elements of this code:
@@ -586,33 +599,49 @@ app.component.html
 -----------------------------
 
 
-<div *ngIf="isRegister">
-  <h2>Register Form</h2>
-  <form (ngSubmit)="onRegister()">
-    Name:
-    <input type="text" id="name" name="name" [(ngModel)]="name"><br><br>
-    Username:
-    <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
-    Password:
-    <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
-    <button type="submit">Register</button><br><br>
+<div *ngIf="isLoggedIn">
+  <h2>Chat</h2>
+  <form (ngSubmit)="onSend()">
+    Receiver Username:
+    <input type="text" id="rname" name="rname" [(ngModel)]="rname"><br><br>
+    Message:
+    <input type="text" id="msg" name="msg" [(ngModel)]="msg"><br><br>
+    <button type="submit">Send</button><br><br>
   </form>
-  <button (click)="toggleForm()">Login</button>
+  <button (click)="onLogout()">Log out</button>
 </div>
 
-<div *ngIf="!isRegister">
-  <h2>Login Form</h2>
-  <form (ngSubmit)="onLogin()">
-    Username:
-    <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
-    Password:
-    <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
-    <button type="submit">Login</button><br><br>
-  </form>
-  <button (click)="toggleForm()">Register</button>
+<div *ngIf="!isLoggedIn">
+  <div *ngIf="isRegister">
+    <h2>Register Form</h2>
+    <form (ngSubmit)="onRegister()">
+      Name:
+      <input type="text" id="name" name="name" [(ngModel)]="name"><br><br>
+      Username:
+      <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+      Password:
+      <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+      <button type="submit">Register</button><br><br>
+    </form>
+    <button (click)="toggleForm()">Login</button>
+  </div>
+
+  <div *ngIf="!isRegister">
+    <h2>Login Form</h2>
+    <form (ngSubmit)="onLogin()">
+      Username:
+      <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+      Password:
+      <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+      <button type="submit">Login</button><br><br>
+    </form>
+    <button (click)="toggleForm()">Register</button>
+  </div>
 </div>
 
 <h4>{{status}}</h4>
+
+
 
 ****************************************************************************************************
 DESCRIPTION: 
