@@ -143,6 +143,32 @@ namespace CRUD_ADO
     }
 }
 
+*****************************************************************************************************
+
+DESCRIPTION: 
+
+This code is a C# class named CRUD that appears to be related to a simple implementation of Create, Read, Update, and Delete (CRUD) operations in the context of a user login and message sending system. Let's break down the different methods and their functionality in the code:
+
+chkValidity Method:
+
+This method is intended to check the validity of a user's credentials by comparing the provided uname (username) and pass (password) with records in a SQL Server database.
+It establishes a connection to the database, retrieves data from the "LoginTb" table, and iterates through the records to find a match.
+If valid credentials are found, it returns true; otherwise, it returns false.
+AddUser Method:
+
+This method is used to add a new user to the system.
+It takes the user's name (name), username (uname), and password (pass) as input parameters.
+It inserts a new record into the "LoginTb" table in the database with the provided user information.
+If the insertion is successful, it returns true; otherwise, it returns false.
+SendMessage Method:
+
+This method is intended to send a message from one user to another.
+It takes the sender's username (uname), sender's password (pass), receiver's username (rname), and the message text (message) as input parameters.
+It performs several checks:
+It checks if the sender's credentials are valid by calling the chkValidity method.
+It checks if the receiver's username exists in the "LoginTb" table in the database.
+If both sender and receiver checks pass, it inserts a new message record into the "messageTbl" table in the database.
+If the message insertion is successful, it returns "Message sent"; otherwise, it returns "Failed to send message." If any exception occurs during the process, it returns the error message.
 
 ==================================================================================
 
@@ -194,6 +220,36 @@ namespace Chat_App.Controllers
 
 
 ***************************************************************************************************************************************************************************************************
+
+DESCRIPTION: 
+
+The code provided here, is a C# class named ChatController intended for use in an ASP.NET Core web application. There is a controller class for handling HTTP requests related to user login and sending messages in a chat application. Here's a description of the code:
+
+Attribute Decorations:
+
+[Produces("application/json")]: This attribute specifies that the controller should produce JSON responses by default.
+[Route("api/[controller]")]: This attribute defines the route for the controller, where [controller] is a placeholder for the controller's name.
+[ApiController]: This attribute indicates that this class is an API controller, allowing for automatic HTTP status code responses.
+Endpoints:
+
+The ChatController class defines three HTTP endpoints using the [HttpGet] attribute.
+a. Login Endpoint:
+
+URL: /api/Chat/Login
+Parameters: uname (username) and pass (password).
+When accessed via an HTTP GET request, it checks the validity of the provided username and password by calling the CRUD_ADO.CRUD.chkValidity method. If valid, it returns "Login successful"; otherwise, it returns "Username or password not found. Register to log in."
+b. AddUser Endpoint:
+
+URL: /api/Chat/AddUser
+Parameters: name (user's name), uname (username), and pass (password).
+When accessed via an HTTP GET request, it attempts to add a new user to the system by calling the CRUD_ADO.CRUD.AddUser method. If the user is added successfully, it returns "User added successfully"; otherwise, it returns "Failed to add user."
+c. SendMessage Endpoint:
+
+URL: /api/Chat/SendMessage
+Parameters: uname (sender's username), pass (sender's password), rname (receiver's username), and message (the message to be sent).
+When accessed via an HTTP GET request, it calls the CRUD_ADO.CRUD.SendMessage method to send a message. The result (either "Message sent" or "Failed to send message") is returned as the response.
+
+As this code is designed for a simple chat application and follows the RESTful conventions for defining API endpoints. It relies on the CRUD_ADO.CRUD class, which is presumably responsible for interacting with a database to perform operations like user authentication, user registration, and sending messages. 
 ***************************************************************************************************************************************************************************************************
 
 
@@ -205,6 +261,26 @@ Step-3
 
 
 ***************************************************************************************************************************************************************************************************
+
+DESCRIPTION:
+
+
+
+Obtaining URLs from Swagger:
+
+Swagger is a tool for documenting and testing APIs. It generates a user-friendly interface that allows us to explore and test our API. When we open our API in Swagger, it provides a list of endpoints and their corresponding URLs.
+
+In the context of the provided code, Swagger likely generated URLs for the three endpoints in our ChatController. We can access these URLs by running our ASP.NET Core application and navigating to the Swagger documentation page. 
+Connecting the Web API to Angular:
+
+To connect our Angular application to the Web API using the Swagger-generated URLs, we can follow these steps:
+a. Create an Angular Service: In our Angular application, create a service that will be responsible for making HTTP requests to the Web API. We can use Angular's HttpClient module for this purpose.
+
+b. Use HttpClient for API Requests: Within our Angular service, use the HttpClient to make HTTP GET requests to the URLs obtained from Swagger. We've used these URLs as the base URLs for our API requests.
+
+c. Subscribe to the Observables: When we make API requests, we have got observables as responses. Subscribe to these observables to handle the API responses, and take appropriate actions based on the data or errors received.
+
+d. Display API Data: Once we receive data from the API, we can display it in our Angular components by binding it to the UI elements. We can use Angular templates and data-binding to display the data to users.
 ***************************************************************************************************************************************************************************************************
 
 
@@ -232,3 +308,26 @@ https://localhost:44374/api/Chat/AddUser?name=Monica&uname=gupta&pass=Moni123
 msg:
 
 https://localhost:44374/api/Chat/SendMessage?uname=siri&pass=siri1234&rname=gupta&message=Good%20morning%20mam
+
+
+***********************************************************************************************************
+
+DESCRIPTION: 
+Based on the provided URLs, it appears we've successfully started our Angular application and are attempting to connect to a Web API built with ASP.NET Core. Let's describe the URLs and how they relate to the previous codes:
+
+Login URL:
+
+URL: https://localhost:44374/api/Chat?uname=siri&pass=siri1234
+This URL corresponds to the Login endpoint of the ChatController. It is used for user authentication.
+The uname and pass query parameters are used to provide the username and password for authentication.
+Register URL:
+
+URL: https://localhost:44374/api/Chat/AddUser?name=Monica&uname=gupta&pass=Moni123
+This URL corresponds to the AddUser endpoint of the ChatController. It is used for user registration.
+The name, uname, and pass query parameters are used to provide the user's name, username, and password for registration.
+Message URL:
+
+URL: https://localhost:44374/api/Chat/SendMessage?uname=siri&pass=siri1234&rname=gupta&message=Good%20morning%20mam
+This URL corresponds to the SendMessage endpoint of the ChatController. It is used to send messages between users in the chat application.
+The uname, pass, rname, and message query parameters are used to specify the sender's username, sender's password, receiver's username, and the message text.
+In the context of our Angular application, we can make HTTP requests to these URLs using the Angular HttpClient module. We can create services that make GET requests to these endpoints with the appropriate query parameters.
