@@ -7,12 +7,9 @@ CREATE TABLE login (
 
 -- Create the 'message' table
 CREATE TABLE message (
-    message_id INT AUTO_INCREMENT,
+ 
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     message TEXT,
-    time TIMESTAMP,
-    PRIMARY KEY (message_id),
-    FOREIGN KEY (sender_id) REFERENCES login(username),
-    FOREIGN KEY (receiver_id) REFERENCES login(username)
+    time TIMESTAMP
 );
