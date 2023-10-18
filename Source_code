@@ -331,3 +331,184 @@ URL: https://localhost:44374/api/Chat/SendMessage?uname=siri&pass=siri1234&rname
 This URL corresponds to the SendMessage endpoint of the ChatController. It is used to send messages between users in the chat application.
 The uname, pass, rname, and message query parameters are used to specify the sender's username, sender's password, receiver's username, and the message text.
 In the context of our Angular application, we can make HTTP requests to these URLs using the Angular HttpClient module. We can create services that make GET requests to these endpoints with the appropriate query parameters.
+
+
+
+
+***************************************************************************************************************************************************************************************************
+***************************************************************************************************************************************************************************************************
+
+
+Step-5
+
+1. to generate a service use command "ng generate service <servicename>"
+2. then change service.ts, app.module.ts, app.component.ts and app.component.html accordingly
+
+
+=======================================================
+
+
+chat.service.ts
+
+--------------------
+
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ChatService {
+
+  constructor(private httpClient:HttpClient) { }
+  
+  getPosts(uname: string, pass: string): Observable<any[]> {
+    return this.httpClient.get<any[]>(`https://localhost:44374/api/Chat?uname=${uname}&pass=${pass}`);
+  }
+
+  getPosts1(name: string, uname: string, pass: string): Observable<any[]> {
+    return this.httpClient.get<any[]>(`https://localhost:44374/api/Chat/AddUser?name=${name}&uname=${uname}&pass=${pass}`);
+  }
+
+  getPosts2(uname: string, rname: string, msg: string): Observable<any[]> {
+    return this.httpClient.get<any[]>(`https://localhost:44374/api/Chat/SendMessage?uname=${uname}&rname=${rname}&message=${msg}`);
+  }
+}
+
+
+=============================================================================================================================================================
+
+
+app.module.ts
+
+-------------------------
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import { ChatService } from './chat.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [ChatService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+=============================================================================================================================================================
+
+
+app.component.ts
+
+--------------------------------
+
+import { Component, OnInit } from '@angular/core';
+import { ChatService } from './chat.service';
+import { HttpClientModule } from '@angular/common/http';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit{
+  public status: string="";
+  public uname: string = "";
+  public pass: string = "";
+  public name: string = "";
+  public rname: string = "";
+  public msg: string = "";
+  public isRegister: boolean = false;
+
+  constructor(private chat: ChatService) { }
+
+  ngOnInit() { }
+
+  onRegister() {
+    this.chat.getPosts1(this.name, this.uname, this.pass).subscribe((stat: any) => {
+      this.status = stat;
+      console.log(stat);
+    });
+  }
+
+  onLogin() {
+    this.chat.getPosts(this.uname, this.pass).subscribe((stat: any) => {
+      this.status = stat;
+      console.log(stat);
+    });
+  }
+
+  toggleForm() {
+    this.isRegister = !this.isRegister;
+    this.name = "";
+    this.uname = "";
+    this.pass = "";
+  }
+
+  onSend() {
+    this.chat.getPosts2(this.uname, this.rname, this.msg).subscribe((stat: any) => {
+      this.status = stat;
+      console.log(stat);
+    });
+  }
+
+}
+
+
+=============================================================================================================================================================
+
+
+app.component.html
+
+-----------------------------
+
+
+<div *ngIf="isRegister">
+  <h2>Register Form</h2>
+  <form (ngSubmit)="onRegister()">
+    Name:
+    <input type="text" id="name" name="name" [(ngModel)]="name"><br><br>
+    Username:
+    <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+    Password:
+    <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+    <button type="submit">Register</button><br><br>
+  </form>
+  <button (click)="toggleForm()">Login</button>
+</div>
+
+<div *ngIf="!isRegister">
+  <h2>Login Form</h2>
+  <form (ngSubmit)="onLogin()">
+    Username:
+    <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+    Password:
+    <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+    <button type="submit">Login</button><br><br>
+  </form>
+  <button (click)="toggleForm()">Register</button>
+</div>
+
+<h4>{{status}}</h4>
+
+
+
+
+
