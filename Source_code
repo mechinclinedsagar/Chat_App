@@ -1,5 +1,16 @@
 SQL:
 
+
+Step-1:
+
+=================================================================================
+
+Create two tables login and message
+
+login has columns person, username and password
+message has columns sender_id, receiver_id, msgs and msg_time
+
+
 ==================================================================================
 
 
@@ -23,13 +34,165 @@ select * from LoginTb;
 
 select * from messageTbl;
 
-
-==================================================================================
-
+***************************************************************************************************************************************************************************************************
+***************************************************************************************************************************************************************************************************
 
 WEB API:
 
+Step-2:
+
+=================================================================================
+
+1. Create a web api project 
+2. Then from this project add a new project for crud operations which it is a library
+3. use this library in the web api project 
+4. After creating the library, using connection string we connect to our database and perform some operations on the table by writing functions here in the library
+5. Add this librrary as reference in the web api project 
+6. Add an API controller and use the functions defined in the library to do operations on the table.
+
 
 ==================================================================================
+
+CRUD.cs
+
+--------------------------
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace CRUD_ADO
+{
+    public class CRUD
+    {
+        public static Boolean chkValidity(string uname, string pass)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+                SqlCommand cmd = new SqlCommand("Select * from LoginTb", con);
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr.GetString("username").Equals(uname) && rdr.GetString("passwrd").Equals(pass))
+                        return true;
+                }
+
+            }
+            catch (Exception e) { return false; }
+            return false;
+        }
+
+        public static bool AddUser(string name, string uname, string pass)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+                SqlCommand cmd = new SqlCommand($"INSERT INTO LoginTb (person, username, passwrd) VALUES ('{name}', '{uname}', '{pass}')", con);
+                int rowsAffected = cmd.ExecuteNonQuery();
+                con.Close();
+                return rowsAffected > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public static string SendMessage(string uname, string pass, string rname, string message)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+
+                // Check if sender's credentials are valid
+                if (!chkValidity(uname, pass))
+                {
+                    return "Sender credentials are not valid.";
+                }
+
+                // Check if the receiver's username exists in the database
+                SqlCommand checkReceiverCmd = new SqlCommand($"SELECT COUNT(*) FROM LoginTb WHERE username = '{rname}'", con);
+                int receiverCount = (int)checkReceiverCmd.ExecuteScalar();
+
+                if (receiverCount == 0)
+                {
+                    return "Receiver does not exist.";
+                }
+
+                // Insert the message into the messageTb table
+                SqlCommand insertMessageCmd = new SqlCommand($"INSERT INTO messageTbl (sender_id, receiver_id, msgs) VALUES  ('{uname}', '{rname}', '{message}')", con);
+
+                int rowsAffected = insertMessageCmd.ExecuteNonQuery();
+                con.Close();
+
+                if (rowsAffected > 0)
+                    return "Message sent";
+                return "Failed to send message";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+    }
+}
+
+
+==================================================================================
+
+
+ChatController.cs
+
+--------------------------------
+
+
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+
+namespace Chat_App.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ChatController : ControllerBase
+    {
+        [HttpGet]
+        public ActionResult<string> Login(string uname, string pass)
+        {
+            if (CRUD_ADO.CRUD.chkValidity(uname, pass))
+            {
+                return "Login successful";
+            }
+            return "Username or password not found. Register to log in";
+        }
+
+        [HttpGet("AddUser")]
+        public ActionResult<string> AddUser(string name, string uname, string pass)
+        {
+            if (CRUD_ADO.CRUD.AddUser(name, uname, pass))
+            {
+                return "User added successfully";
+            }
+            return "Failed to add user";
+        }
+        [HttpGet("SendMessage")]
+        public ActionResult<string> SendMessage(string uname, string pass, string rname, string message)
+        {
+            string Message = CRUD_ADO.CRUD.SendMessage(uname, pass, rname, message);
+            return Message;
+        }
+    }
+}
+
+
+
 
 
