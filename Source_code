@@ -399,7 +399,7 @@ getPosts1(name: string, uname: string, pass: string): This method makes an HTTP 
 
 getPosts2(uname: string, rname: string, msg: string): This method makes an HTTP GET request to yet another URL, seemingly for sending messages in a chat application. It takes the sender's username (uname), receiver's username (rname), and the message text (msg) as parameters and returns an Observable of type any[].
 
-Overall, this service is designed for making HTTP GET requests to specific endpoints of your backend API.
+Overall, this service is designed for making HTTP GET requests to specific endpoints of our backend API.
 =============================================================================================================================================================
 
 
@@ -444,7 +444,7 @@ NgModule is imported from @angular/core. It's a decorator and module for definin
 
 BrowserModule is imported from @angular/platform-browser. It provides essential services and directives for working with web browsers.
 
-AppRoutingModule is imported from an external file (presumably defined in your project) and is used for routing configuration.
+AppRoutingModule is imported from an external file (presumably defined in our project) and is used for routing configuration.
 
 AppComponent is the root component of the application, and it's also imported from an external file.
 
@@ -469,7 +469,7 @@ bootstrap: This property specifies the root component of the application. In thi
 Export Class AppModule:
 
 The AppModule class is exported, making it available for use elsewhere in the application.
-In summary, this code configures the main Angular module for your application. It sets up the necessary imports, declarations, and providers. It also includes the ChatService, which implies that this service can be injected into components or other parts of the application. The AppRoutingModule is used for routing configuration, and the FormsModule and HttpClientModule are imported to enable form handling and HTTP requests, respectively. The AppComponent is the root component of the application.
+In summary, this code configures the main Angular module for our application. It sets up the necessary imports, declarations, and providers. It also includes the ChatService, which implies that this service can be injected into components or other parts of the application. The AppRoutingModule is used for routing configuration, and the FormsModule and HttpClientModule are imported to enable form handling and HTTP requests, respectively. The AppComponent is the root component of the application.
 
 
 
@@ -615,7 +615,7 @@ app.component.html
 
 ****************************************************************************************************
 
-The provided code is an Angular component template defined in the app.component.html file. It specifies the HTML structure and user interface for the root component of your Angular application. Let's break down and explain the code:
+The provided code is an Angular component template defined in the app.component.html file. It specifies the HTML structure and user interface for the root component of our Angular application. Let's break down and explain the code:
 
 Conditional Rendering:
 
@@ -645,7 +645,7 @@ Event handlers are defined using Angular event binding and method calls. For exa
 Toggling Between Forms:
 
 The "Login" and "Register" buttons at the end of each form trigger the toggleForm() method, which switches between the registration and login forms by toggling the value of the isRegister property.
-In summary, this HTML template provides a simple user interface for user registration and login in your Angular application. Users can toggle between the registration and login forms, fill out the required information, submit the forms, and receive status messages based on the API responses. The ChatService is used to make API requests and handle the responses, updating the status property to provide feedback to the user.
+In summary, this HTML template provides a simple user interface for user registration and login in our Angular application. Users can toggle between the registration and login forms, fill out the required information, submit the forms, and receive status messages based on the API responses. The ChatService is used to make API requests and handle the responses, updating the status property to provide feedback to the user.
 *************************************************************************************************
 
 
