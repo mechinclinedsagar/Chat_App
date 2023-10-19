@@ -491,6 +491,8 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class AppComponent implements OnInit{
   public status: string="";
+  public status1: string="";
+  public status2: string="";
   public uname: string = "";
   public pass: string = "";
   public name: string = "";
@@ -500,15 +502,16 @@ export class AppComponent implements OnInit{
   public isLoggedIn: boolean = false;
   public messages: any[] = []; 
   public currentUser: string = ""; 
-  public status1: string = "";
 
-  constructor(private chat: ChatService) { }
+  constructor(private chat: ChatService) { 
+    
+  }
 
   ngOnInit() { }
 
   onRegister() {
     this.chat.getPosts1(this.name, this.uname, this.pass).subscribe((stat: any) => {
-      this.status = stat;
+      this.status1 = stat;
       console.log(stat);
     });
   }
@@ -521,8 +524,6 @@ export class AppComponent implements OnInit{
         this.isLoggedIn = true;
       }
       console.log(stat);
-      this.uname = "";
-      this.pass = "";
     });
   }
 
@@ -535,17 +536,17 @@ export class AppComponent implements OnInit{
 
   onSend() {
     this.chat.getPosts2(this.uname, this.rname, this.msg).subscribe((stat: any) => {
-      this.status1 = stat;
+      this.status2 = stat;
       console.log(stat);
-      if (this.status1 !== "Receiver does not exist.") {
+       if (stat !== 'Receiver does not exist.') {
         this.messages.push({
           sender: this.uname,
           receiver: this.rname,
-          text: this.msg
+          text: this.msg,
         });
       }
-      this.rname = ""; 
-      this.msg = "";
+      this.rname = '';
+      this.msg = '';
     });
   }
 
