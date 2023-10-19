@@ -617,70 +617,62 @@ app.component.html
 -----------------------------
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chat App</title>
-</head>
-<body>
-  <div class="background-container">
- 
- <div class="container" *ngIf="isLoggedIn">
-  <h2 style="text-align: center; font-size: 25px; padding-bottom: 5px; font-family: Cursive;">Do time pass</h2>
-  <h4 style="font-weight: lighter; font-family: Cursive;">{{status1}}</h4>
-  <div class="chatbox">
-    <div class="message" *ngFor="let message of messages">
-      <div class="sender" *ngIf="message.sender !== currentUser">{{ message.sender }}</div>
-      <div class="receiver" *ngIf="message.sender === currentUser">{{ message.receiver }}</div>
-      <div class="text">{{ message.text }}</div>
+<div class="background-container">
+  <div *ngIf="isLoggedIn" class="container">
+    <h2>Group chat</h2>
+    <h4>{{status2}}</h4>
+    <div class="chatbox">
+      <div class="message" *ngFor="let message of messages">
+        <div class="sender" *ngIf="message.sender !== currentUser">{{ message.sender }}</div>
+        <div class="receiver" *ngIf="message.sender === currentUser">{{ message.receiver }}</div>
+        <div class="receiver" *ngIf="message.receiver === currentUser">{{ message.sender }}</div>
+        <div class="text">{{ message.text }}</div>
+      </div>
+    </div>
+    <form (ngSubmit)="onSend()" class="form-container">
+      Receiver Username:
+      <input type="text" id="rname" name="rname" [(ngModel)]="rname"><br><br>
+      Message:
+      <input type="text" id="msg" name="msg" [(ngModel)]="msg"><br><br>
+      <button type="submit">Send</button><br><br>
+    </form>
+    <button (click)="onLogout()">Log out</button>
+  </div>
+
+  <div *ngIf="!isLoggedIn" class="container">
+    <div *ngIf="isRegister">
+      <h2>Register to connect</h2>
+      <div class="box">
+        <h4>{{status1}}</h4>
+        <form (ngSubmit)="onRegister()" class="form-container">
+          Name:
+          <input type="text" id="name" name="name" [(ngModel)]="name"><br><br>
+          Username:
+          <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+          Password:
+          <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+          <button type="submit">Register</button><br><br>
+        </form>
+        <button (click)="toggleForm()">Login</button>
+      </div>
+    </div>
+
+    <div *ngIf="!isRegister" class="container">
+      <h2>TryChat</h2>
+      <div class="box">
+        <h4>{{status}}</h4>
+        <form (ngSubmit)="onLogin()" class="form-container">
+          Username:
+          <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
+          Password:
+          <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
+          <button type="submit">Login</button><br><br>
+        </form>
+        <button (click)="toggleForm()">Register</button>
+      </div>
     </div>
   </div>
-  <form (ngSubmit)="onSend()" class="input-form">
-    Receiver Username:
-    <input type="text" id="rname" name="rname" [(ngModel)]="rname"><br><br>
-    Message:
-    <input type="text" id="msg" name="msg" [(ngModel)]="msg"><br><br>
-    <button type="submit">Send</button><br><br>
-  </form>
-  <button (click)="onLogout()" class="logout-button">Log out</button>
 </div>
-
-<div class="container" *ngIf="!isLoggedIn">
-  <div *ngIf="isRegister" class="form-container">
-    <h2>Register to Connect</h2>
-    <h4>{{status}}</h4>
-    <form (ngSubmit)="onRegister()">
-      Name:
-      <input type="text" id="name" name="name" [(ngModel)]="name"><br><br>
-      Username:
-      <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
-      Password:
-      <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
-      <button type="submit">Register</button><br><br>
-    </form>
-    <button (click)="toggleForm()">Login</button>
-  </div>
-
-  <div *ngIf="!isRegister" class="form-container">
-    <h2 style="text-align: center; font-size: 25px; padding-bottom: 10px;">Try Chat</h2>
-    <h4>{{status}}</h4>
-    <form (ngSubmit)="onLogin()">
-      Username:
-      <input type="text" id="uname" name="uname" [(ngModel)]="uname"><br><br>
-      Password:
-      <input type="text" id="pass" name="pass" [(ngModel)]="pass"><br><br>
-      <button type="submit">Login</button><br><br>
-    </form>
-    <button (click)="toggleForm()">Register</button>
-  </div>
-</div>
-
-
-</div>
-</body>
-</html>
-
 
 
 
@@ -728,6 +720,7 @@ app.component.css
 html, body {
     height: 100%;
     margin: 0;
+    font-family: Cursive;
   }
 
   .background-container {
@@ -740,29 +733,61 @@ html, body {
     justify-content: center;
     align-items: center;
     opacity: 0.8; 
+    font-family: Cursive;
   }
   
  
-  
   .container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: rgb(70, 152, 219);
-    width: 500px;
-    height: 550px; 
-    padding: 20px;
+    width: 30%;
+    height: 70%; 
     border-radius: 10px;
+    font-family: Cursive;
+    opacity: 0.95;
   }
+
+
+  button {
+    display: block;
+    margin: auto;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: Cursive;
+  }
+
+  .form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    border: 2px solid #000000;
+    padding: 2rem;
+  }
+  
+.box{
+    border: 2px solid #000000;
+    padding: 2rem;
+}
+  
+h2{
+    text-align: center;
+}
   
   .chatbox {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ffffff;
+    border: 2px solid #000000;
+    background-color: aliceblue;
     border-radius: 5px;
     padding: 20px;
-    width: 350px;
-    height: 400px;
+    width: 50%;
+    height: 35%;
     overflow-y: scroll;
     margin-bottom: 20px;
   }
@@ -772,7 +797,7 @@ html, body {
   }
   
   .sender {
-    background-color: #eff6ff;
+    background-color: #dcf8c6;
     padding: 5px;
     border-radius: 5px;
     margin-bottom: 5px;
@@ -790,44 +815,5 @@ html, body {
     border-radius: 5px;
   }
   
-  .input-form {
-    display: flex;
-    flex-direction: column;
-    font-family: Cursive;
-  }
-  
-  .logout-button {
-    background-color: black;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .form-container {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 20px;
-    font-family: Cursive;
-  }
-  
-  button {
-    background-color: black;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: Cursive;
-  }
-  
-  button:hover {
-    opacity: 0.8;
-  }
-  
-
-
 
 
