@@ -185,8 +185,14 @@ using System.Collections.Generic;
 
 namespace Chat_App.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Produces("application/json")]        
+// In the code you provided, the [Produces("application/json")] attribute is used to specify the content type that the action method of the ChatController will produce in its responses. 
+// In this case, it indicates that the action methods in the ChatController will produce JSON responses.
+  
+
+[Route("api/[controller]")]
+
+
     [ApiController]
     public class ChatController : ControllerBase
     {
